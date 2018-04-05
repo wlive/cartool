@@ -26,7 +26,13 @@
 
         "codeception/base": "^2.2.3",
         "codeception/verify": "~0.3.1",
-        "codeception/specify": "~0.4.3"
+        "codeception/specify": "~0.4.3",
+        
+        "almasaeed2010/adminlte": "~2.4",
+        "yiister/yii2-gentelella": "~1.0",
+        
+        "russ666/yii2-countdown": "*",
+        "kartik-v/yii2-widgets": "*"
     },
     "config": {
         "process-timeout": 1800,

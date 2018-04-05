@@ -12,6 +12,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -82,7 +83,7 @@ class SiteController extends Controller
 
         $model->password = '';
         return $this->render('login', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -112,7 +113,7 @@ class SiteController extends Controller
             return $this->refresh();
         }
         return $this->render('contact', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -125,4 +126,28 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * Lista de Times.
+     *
+     * @return array
+     */
+    public function actionListaTimes($q = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'nome' => '', 'url-escudo' => '']];
+        if (!is_null($q)) {
+            $opts = array('http' => array('header' => "User-Agent:MyAgent/1.0\r\n"));
+            //Basically adding headers to the request
+            $context = stream_context_create($opts);
+            $json = file_get_contents('https://api.cartolafc.globo.com/times', false, $context);
+            $obj = json_decode($json);
+            $out = [];
+            foreach ($obj as $time){
+                $out['results'][] = ['id' => $time->time_id, 'nome' => $time->nome, 'url-escudo' => $time->url_escudo_png];
+            }
+        } 
+        return $out;
+    }
+
 }
