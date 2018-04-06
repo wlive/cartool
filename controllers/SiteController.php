@@ -2,13 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\ContactForm;
+use app\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -134,19 +134,25 @@ class SiteController extends Controller
      */
     public function actionListaTimes($q = null)
     {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'nome' => '', 'url-escudo' => '']];
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        //$out = ['results' => ['id' => '', 'nome' => '', 'url-escudo' => '']];
         if (!is_null($q)) {
+
+            $url = 'https://api.cartolafc.globo.com/times?q=' . $q;
+
+            ini_set("allow_url_fopen", 1);
             $opts = array('http' => array('header' => "User-Agent:MyAgent/1.0\r\n"));
             //Basically adding headers to the request
             $context = stream_context_create($opts);
-            $json = file_get_contents('https://api.cartolafc.globo.com/times', false, $context);
+            $json = file_get_contents($url, false, $context);
             $obj = json_decode($json);
-            $out = [];
-            foreach ($obj as $time){
-                $out['results'][] = ['id' => $time->time_id, 'nome' => $time->nome, 'url-escudo' => $time->url_escudo_png];
+            if (isset($obj)) {
+                $out = [];
+                foreach ($obj as $time) {
+                    $out['results'][] = ['id' => $time->time_id, 'nome' => $time->nome, 'cartola' => $time->nome_cartola, 'escudo' => $time->url_escudo_png];
+                }
             }
-        } 
+        }
         return $out;
     }
 

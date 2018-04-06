@@ -17,8 +17,8 @@ var formatTime = function (time) {
     var markup =
 '<div class="row">' + 
     '<div class="col-sm-5">' +
-        '<img src="' + time.url_escudo_png + '" class="img-rounded" style="width:30px" />' +
-        '<b style="margin-left:5px">' + time.nome + '</b>' + 
+        '<img src="' + encodeURI(time.escudo) + '" style="height:40px" />' +
+        '<b style="margin-left:5px">' + time.nome + '</b>' + time.cartola +
     '</div>' 
 '</div>';
     if (time.description) {
@@ -130,12 +130,13 @@ JS;
     </div>
 <?=Select2::widget([
     'name' => 'kv-time-template',
-    'options' => ['placeholder' => 'Search for a city ...'],
+    'options' => ['placeholder' => 'Procure pelo Time ...'],
     'pluginOptions' => [
         'allowClear' => true,
-        'minimumInputLength' => 3,
+        'multiple'=>true,
+        'minimumInputLength' => 4,
         'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+            'errorLoading' => new JsExpression("function () { return 'Aguardando resultados...'; }"),
         ],
         'ajax' => [
             'url' => Url::toroute(['lista-times']),
