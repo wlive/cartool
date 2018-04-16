@@ -3,7 +3,7 @@
 return [
     'class' => 'yii\db\Connection',
     //'driverName' => 'sqlite2',
-    'dsn' => 'sqlite:/home/wesley/NetBeansProjects/cartool/db/cartool.db',
+    'dsn' => 'sqlite:../db/cartool.db',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
